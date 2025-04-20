@@ -1,0 +1,51 @@
+name: Test
+concurrency:
+  # Run only for most recent commit in PRs but for all tags and commits on main
+  # Ref: https://docs.github.com/en/actions/using-jobs/using-concurrency
+  group: ${{ github.workflow }}-${{ github.head_ref || github.sha }}
+  cancel-in-progress: true
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '.github/workflows/**'
+      - '!.github/workflows/test_and_coverage.yml'
+      - 'mk/**'
+      - 'tools/tools.go'
+      - '.gitignore'
+      - '.golangci.yml'
+      - '.header'
+      - 'cobra.yml'
+      - 'LICENSE'
+      - 'Makefile'
+      - 'README.md'
+      - 'version'
+  pull_request:
+    paths-ignore:
+      - '.github/workflows/**'
+      - '!.github/workflows/test_and_coverage.yml'
+      - 'mk/**'
+      - 'tools/tools.go'
+      - '.gitignore'
+      - '.golangci.yml'
+      - '.header'
+      - 'cobra.yml'
+      - 'LICENSE'
+      - 'Makefile'
+      - 'README.md'
+      - 'version'
+permissions:
+  contents: read
+  pull-requests: read
+jobs:
+  test:
+    name: Test and Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: Test with Coverage
+        run: make test-coverage

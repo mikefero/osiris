@@ -1,0 +1,53 @@
+version: "2"
+linters:
+  default: standard
+  enable:
+    - asciicheck
+    - bidichk
+    - decorder
+    - dogsled
+    - dupl
+    - errname
+    - errorlint
+    - exhaustive
+    - forbidigo
+    - forcetypeassert
+    - goconst
+    - gocritic
+    - godot
+    - goheader
+    - goprintffuncname
+    - gosec
+    - grouper
+    - importas
+    - lll
+    - misspell
+    - nakedret
+    - nestif
+    - nilnil
+    - nolintlint
+    - prealloc
+    - predeclared
+    - revive
+    - staticcheck
+    - thelper
+    - unconvert
+    - whitespace
+    - wrapcheck
+  disable:
+    - depguard
+    - mnd
+  settings:
+    goheader:
+      values:
+        regexp:
+          COPYRIGHT-HOLDER: Copyright © {{ MOD-YEAR-RANGE }} Michael Fero
+      template-path: .header
+    misspell:
+      locale: US
+  exclusions:
+    paths:
+      - _test.go
+      - third_party$
+      - builtin$
+      - examples$

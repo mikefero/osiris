@@ -1,0 +1,6 @@
+.vscode
+bin
+
+.env
+coverage.html
+coverage.out
