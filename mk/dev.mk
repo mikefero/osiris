@@ -11,10 +11,14 @@ define APP_LDFLAGS_DEV
 -X $(APP_PACKAGE).BuildDate=$(APP_BUILD_DATE)
 endef
 
-.PHONY: version
-version: ## Run the version command
-	@CGO_ENABLED=0 go run -ldflags "$(APP_LDFLAGS_DEV)" "$(APP_DIR)" version
+.PHONY: dump
+dump: ## Run the dump command
+	@CGO_ENABLED=0 go run -ldflags "$(APP_LDFLAGS_DEV)" "$(APP_DIR)" dump
 
 .PHONY: license
 license: ## Run the license command
 	@CGO_ENABLED=0 go run -ldflags "$(APP_LDFLAGS_DEV)" "$(APP_DIR)" license
+
+.PHONY: version
+version: ## Run the version command
+	@CGO_ENABLED=0 go run -ldflags "$(APP_LDFLAGS_DEV)" "$(APP_DIR)" version

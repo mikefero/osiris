@@ -13,19 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package main
+package resource
 
-import (
-	_ "embed"
+// SNIResource represents sni mappings in Kong Gateway.
+type SNIResource struct {
+	BaseResource
+}
 
-	"github.com/mikefero/osiris/cmd"
-)
-
-//go:embed LICENSE
-var license string
-
-func main() {
-	cmd.Execute(cmd.Options{
-		License: license,
-	})
+// NewSNI creates a new sni resource.
+func NewSNI() Resource {
+	return &SNIResource{
+		BaseResource: BaseResource{
+			name: "sni",
+			path: "snis",
+		},
+	}
 }

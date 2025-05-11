@@ -1,0 +1,11 @@
+base_url: http://localhost:3737
+control_plane_id: 4168295f-015e-4190-837e-0fcc5d72a52f
+logger:
+  level: info
+  filename: osiris.log
+  retention: 7
+output_file: osiris.json
+sanitize: true
+timeouts:
+  timeout: 15s
+  response_header: 15s

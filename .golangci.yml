@@ -1,14 +1,18 @@
 version: "2"
+run:
+  timeout: 10m
 linters:
   default: standard
   enable:
     - asciicheck
     - bidichk
+    - bodyclose
+    - copyloopvar
     - decorder
+    - depguard
     - dogsled
-    - dupl
-    - errname
-    - errorlint
+    - durationcheck
+    - errcheck
     - exhaustive
     - forbidigo
     - forcetypeassert
@@ -16,35 +20,55 @@ linters:
     - gocritic
     - godot
     - goheader
-    - goprintffuncname
     - gosec
+    - govet
     - grouper
     - importas
+    - ineffassign
     - lll
     - misspell
     - nakedret
-    - nestif
+    - nilerr
     - nilnil
+    - noctx
     - nolintlint
     - prealloc
     - predeclared
+    - promlinter
     - revive
+    - rowserrcheck
+    - sqlclosecheck
     - staticcheck
-    - thelper
     - unconvert
+    - unparam
+    - unused
+    - wastedassign
     - whitespace
-    - wrapcheck
   disable:
-    - depguard
     - mnd
   settings:
+    depguard:
+      rules:
+        Main:
+          list-mode: lax
+          allow:
+            - $all
+    exhaustive:
+      # Presence of "default" case in switch statements satisfies exhaustiveness
+      default-signifies-exhaustive: true
     goheader:
       values:
         regexp:
           COPYRIGHT-HOLDER: Copyright © {{ MOD-YEAR-RANGE }} Michael Fero
       template-path: .header
+    goconst:
+      min-occurrences: 10
     misspell:
       locale: US
+    revive:
+      rules:
+        - name: package-comments
+          disabled: true
   exclusions:
     paths:
       - _test.go

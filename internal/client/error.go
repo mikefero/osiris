@@ -13,19 +13,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package main
+package client
 
 import (
-	_ "embed"
-
-	"github.com/mikefero/osiris/cmd"
+	"fmt"
+	"time"
 )
 
-//go:embed LICENSE
-var license string
+// RateLimitError represent a rate limit error.
+type RateLimitError struct {
+	// RetryAfter is the duration to wait before retrying the request
+	// after a rate limit error.
+	RetryAfter time.Duration
+}
 
-func main() {
-	cmd.Execute(cmd.Options{
-		License: license,
-	})
+// Error implements the error interface for RateLimitError.
+func (e *RateLimitError) Error() string {
+	return fmt.Sprintf("rate limited, retry after %s", e.RetryAfter)
 }

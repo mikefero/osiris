@@ -13,19 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package main
+package app
 
-import (
-	_ "embed"
-
-	"github.com/mikefero/osiris/cmd"
+var (
+	// AppName is the name of the application.
+	AppName string
+	// Version is the version of the application.
+	Version string
+	// Commit is the git commit hash of the source tree.
+	Commit string
+	// OsArch is the OS and architecture of the build.
+	OsArch string
+	// GoVersion is the version of go used to build the application.
+	GoVersion string
+	// BuildDate is the date the application was built.
+	BuildDate string
 )
-
-//go:embed LICENSE
-var license string
-
-func main() {
-	cmd.Execute(cmd.Options{
-		License: license,
-	})
-}

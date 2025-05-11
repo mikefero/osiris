@@ -13,19 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package main
+package resource
 
-import (
-	_ "embed"
+// KeyResource represents keys in Kong Gateway.
+type KeyResource struct {
+	BaseResource
+}
 
-	"github.com/mikefero/osiris/cmd"
-)
-
-//go:embed LICENSE
-var license string
-
-func main() {
-	cmd.Execute(cmd.Options{
-		License: license,
-	})
+// NewKey creates a new key resource.
+func NewKey() Resource {
+	return &KeyResource{
+		BaseResource: BaseResource{
+			name: "key",
+			path: "keys",
+		},
+	}
 }

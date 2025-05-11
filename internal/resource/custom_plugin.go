@@ -13,19 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package main
+package resource
 
-import (
-	_ "embed"
+// CustomPluginResource represents custom plugin entities in Kong Gateway.
+type CustomPluginResource struct {
+	BaseResource
+}
 
-	"github.com/mikefero/osiris/cmd"
-)
-
-//go:embed LICENSE
-var license string
-
-func main() {
-	cmd.Execute(cmd.Options{
-		License: license,
-	})
+// NewCustomPlugin creates a new custom-plugin resource.
+func NewCustomPlugin() Resource {
+	return &CustomPluginResource{
+		BaseResource: BaseResource{
+			name: "custom-plugin",
+			path: "custom-plugins",
+		},
+	}
 }

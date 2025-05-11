@@ -13,19 +13,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package main
+package resource
 
-import (
-	_ "embed"
+// TargetResource represents targets in Kong Gateway.
+type TargetResource struct {
+	BaseResource
+}
 
-	"github.com/mikefero/osiris/cmd"
-)
-
-//go:embed LICENSE
-var license string
-
-func main() {
-	cmd.Execute(cmd.Options{
-		License: license,
-	})
+// NewTarget creates a new target resource.
+func NewTarget() Resource {
+	return &TargetResource{
+		BaseResource: BaseResource{
+			name: "target",
+			// TODO(fero): We should add /targets endpoint to Konnect translator
+			path: "v1/targets",
+		},
+	}
 }

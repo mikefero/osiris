@@ -13,25 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+package resource
 
-// Package cmd contains the command line package.
-package cmd
-
-import (
-	"fmt"
-
-	"github.com/spf13/cobra"
-)
-
-var licenseCmd = &cobra.Command{
-	Use:   "license",
-	Short: "Print app-name license",
-	Long:  `The license command prints the license of app-name.`,
-	Run: func(_ *cobra.Command, _ []string) {
-		fmt.Println(license) //nolint:forbidigo
-	},
+// ConsumerGroupResource represents consumer groups in Kong Gateway.
+type ConsumerGroupResource struct {
+	BaseResource
 }
 
-func init() {
-	rootCmd.AddCommand(licenseCmd)
+// NewConsumerGroup creates a new consumer-group resource.
+func NewConsumerGroup() Resource {
+	return &ConsumerGroupResource{
+		BaseResource: BaseResource{
+			name: "consumer-group",
+			path: "consumer_groups",
+		},
+	}
 }

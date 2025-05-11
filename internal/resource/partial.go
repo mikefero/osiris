@@ -13,19 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package main
+package resource
 
-import (
-	_ "embed"
+// PartialResource represents partial configuration entities in Kong Gateway.
+type PartialResource struct {
+	BaseResource
+}
 
-	"github.com/mikefero/osiris/cmd"
-)
-
-//go:embed LICENSE
-var license string
-
-func main() {
-	cmd.Execute(cmd.Options{
-		License: license,
-	})
+// NewPartial creates a new partial resource.
+func NewPartial() Resource {
+	return &PartialResource{
+		BaseResource: BaseResource{
+			name: "partial",
+			path: "partials",
+		},
+	}
 }

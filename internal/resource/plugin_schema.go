@@ -13,19 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package main
+package resource
 
-import (
-	_ "embed"
+// PluginSchemaResource represents plugin schema entities in Konnect only.
+type PluginSchemaResource struct {
+	BaseResource
+}
 
-	"github.com/mikefero/osiris/cmd"
-)
-
-//go:embed LICENSE
-var license string
-
-func main() {
-	cmd.Execute(cmd.Options{
-		License: license,
-	})
+// NewPluginSchema creates a new plugin-schema resource.
+func NewPluginSchema() Resource {
+	return &PluginSchemaResource{
+		BaseResource: BaseResource{
+			name: "plugin-schema",
+			path: "v1/plugin-schemas",
+		},
+	}
 }

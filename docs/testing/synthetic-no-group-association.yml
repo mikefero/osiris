@@ -1,0 +1,399 @@
+_format_version: "3.0"
+ca_certificates:
+  - cert: |
+      -----BEGIN CERTIFICATE-----
+      MIIDkzCCAnugAwIBAgIUYGc07pbHSjOBPreXh7OcNT2+sD4wDQYJKoZIhvcNAQEL
+      BQAwWTELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAkNBMRUwEwYDVQQKDAxZb2xvNDIs
+      IEluYy4xJjAkBgNVBAMMHVlvbG80MiBzZWxmLXNpZ25lZCB0ZXN0aW5nIENBMB4X
+      DTIyMDMyOTE5NDczM1oXDTMyMDMyNjE5NDczM1owWTELMAkGA1UEBhMCVVMxCzAJ
+      BgNVBAgMAkNBMRUwEwYDVQQKDAxZb2xvNDIsIEluYy4xJjAkBgNVBAMMHVlvbG80
+      MiBzZWxmLXNpZ25lZCB0ZXN0aW5nIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
+      MIIBCgKCAQEAvnhTgdJALnuLKDA0ZUZRVMqcaaC+qvfJkiEFGYwX2ZJiFtzU65F/
+      sB2L0ToFqY4tmMVlOmiSZFnRLDZecmQDbbNwc3wtNikmxIOzx4qR4kbRP8DDdyIf
+      gaNmGCuaXTM5+FYy2iNBn6CeibIjqdErQlAbFLwQs5t3mLsjii2U4cyvfRtO+0RV
+      HdJ6Np5LsVziN0c5gVIesIrrbxLcOjtXDzwd/w/j5NXqL/OwD5EBH2vqd3QKKX4t
+      s83BLl2EsbUse47VAImavrwDhmV6S/p/NuJHqjJ6dIbXLYxNS7g26ijcrXxvNhiu
+      YoZTykSgdI3BXMNAm1ahP/BtJPZpU7CVdQIDAQABo1MwUTAdBgNVHQ4EFgQUe1WZ
+      fMfZQ9QIJIttwTmcrnl40ccwHwYDVR0jBBgwFoAUe1WZfMfZQ9QIJIttwTmcrnl4
+      0ccwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAs4Z8VYbvEs93
+      haTHdbbaKk0V6xAL/Q8I8GitK9E8cgf8C5rwwn+wU/Gf39dtMUlnW8uxyzRPx53u
+      CAAcJAWkabT+xwrlrqjO68H3MgIAwgWA5yZC+qW7ECA8xYEK6DzEHIaOpagJdKcL
+      IaZr/qTJlEQClvwDs4x/BpHRB5XbmJs86GqEB7XWAm+T2L8DluHAXvek+welF4Xo
+      fQtLlNS/vqTDqPxkSbJhFv1L7/4gdwfAz51wH/iL7AG/ubFEtoGZPK9YCJ40yTWz
+      8XrUoqUC+2WIZdtmo6dFFJcLfQg4ARJZjaK6lmxJun3iRMZjKJdQKm/NEKz4y9kA
+      u8S6yNlu2Q==
+      -----END CERTIFICATE-----
+    cert_digest: 34e0f1f3d83faefcc8514b6295bc822eab1110dc120140ddf342c017baee8c0f
+    id: 33cf661f-4af5-4087-8933-6a40638e9447
+    tags:
+      - internal-user
+certificates:
+  - cert: |
+      -----BEGIN CERTIFICATE-----
+      MIIC1jCCAb4CCQCt23nwvxSCvjANBgkqhkiG9w0BAQsFADAtMRYwFAYDVQQDDA0q
+      LmV4YW1wbGUuY29tMRMwEQYDVQQKDAprb25naHEub3JnMB4XDTE4MTIzMTIwMTkw
+      MVoXDTE5MTIzMTIwMTkwMVowLTEWMBQGA1UEAwwNKi5leGFtcGxlLmNvbTETMBEG
+      A1UECgwKa29uZ2hxLm9yZzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB
+      AKj/2r1AXo9x+2Csrd0SHbpnzuW+xYqgsd+YA9ZrZNV7SZGSbaZymsRMz8wg5OIU
+      iUik2GM1749/lYvojLFStBPy9UY/gd++5f3wLp4xHiI+IU2XQ97otXKGfyh36RmN
+      dKDqPLN8BG3R346s/y1GOulFvLthYmZVYF9ufHiqimfEDSbTt79P5C3X0Rw/afK1
+      GjHEJPCB/XkZ6lkcEyL6LqZI5oBigDqa9hI/nWLxEzfm8pgosiS38p9TAijlOkpm
+      tX2p2b1pktlNIy3rxsqj6IynN9Wc7FpV1N4HoPKV7vQQ08hjwW6WfanVthaaJosj
+      Vr2TBCJ1ltAmsb+5B2VPYVkCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAnByTyQfV
+      3LkwuoWS57CWcqbNw/cHnv/ChzmIv+6mIXvDBSvCgrPZIWCpaCfYRG6R51E44fr/
+      8V1AKT0Zt15DjrXEEcIGQgsIDO91/wlL091fTAUzSbL0yt7HTlm8sX6xndPNAZrq
+      cfcIPVMxknfqPy2VqS4IrNC03pHkDKtokphBjVUlkiWsdcq+fHYbS2xL2d1Da/uN
+      hX/iwgo+v5gOF5xtaXx7D7L3Cf+MHb/MOXWPfYXNiTpSBVX8/Kx5RP+QLI16nWvw
+      lrijTlXZFR8NIZBrCo/QZ2cNbUAbN3R0n+/kMFubxBL8WEm6Qhi9jBjbJeDMspd8
+      C+/TZJQMpx5vyA==
+      -----END CERTIFICATE-----
+    id: 13c562a1-191c-4464-9b18-e5222b46035b
+    key: |
+      -----BEGIN PRIVATE KEY-----
+      MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCo/9q9QF6Pcftg
+      rK3dEh26Z87lvsWKoLHfmAPWa2TVe0mRkm2mcprETM/MIOTiFIlIpNhjNe+Pf5WL
+      6IyxUrQT8vVGP4HfvuX98C6eMR4iPiFNl0Pe6LVyhn8od+kZjXSg6jyzfARt0d+O
+      rP8tRjrpRby7YWJmVWBfbnx4qopnxA0m07e/T+Qt19EcP2nytRoxxCTwgf15GepZ
+      HBMi+i6mSOaAYoA6mvYSP51i8RM35vKYKLIkt/KfUwIo5TpKZrV9qdm9aZLZTSMt
+      68bKo+iMpzfVnOxaVdTeB6Dyle70ENPIY8Fuln2p1bYWmiaLI1a9kwQidZbQJrG/
+      uQdlT2FZAgMBAAECggEAVnyRcda2Tcy0K7ZTR9aUlie370VhDN/OB7JhDGNreAEf
+      FjuMl+kAoUL5+OpAmB6QXzfVcXhRv+s4GiCJl9nORINK2Id5rIqiYwF+qgBS/o0z
+      N+UYm8QVz6Va/9fV1/jXXd5h8Cygi58jPH32HTJaxbSlsHNXCy3YIx6E3q/QIueR
+      6ZdSXPqMEqxEU19M9jW8UeiRFrpmcyYxVpfxYIY/+O9lYjSpaeLs7hZeCP9PqWXA
+      Sxz2CnHZ8BcsDxAyuoHoVw+kjMpUMvA3sD4lwkV8BAYzfLmQf6PR83SFNsrE8XYu
+      /8WnQuCuytcl8Zg55R6tGCvf6Wyyf+MDRPwv/43QMQKBgQDbqK9Dq54k+EHgSNnP
+      K6AhNjFd6aqcNC1kom/sSlWBnuA/BEqJMECr8S2dYvzONUPPfX5NNUjB4Vw3Qw7a
+      pUgKuCQoVpzpZs5m1bk78itWDtA84LjkXfdejnUXVw/aVxLCM5QV9aEkm/dEWWMI
+      P1WTYVoWoZCLlEE08q0AvZQcdQKBgQDE9ZCmc6ncmhnQftuRj5PnXG2a79MLCT61
+      sCEBDVvkcUJVqbzwGRLwRkdIzLgvmiuP+SukHgyfr8/RXG99xEW/q7NDrtEcqfXP
+      19QXwOIp5NwDnOXyAlXiyZ50fCE2tSo2wP485+NIhmKj5Zt6y/DL6Qbc5k73XmK4
+      KX5Ej15k1QKBgQCc6KeiIFLMt+Ze78tfORue/dZP7p3oDUGr1Hk9AnCIMlSfz1Hr
+      I+Per17VQaOzLcttyYhSYNDDZld4RlezCkQnHBkAE7bs53pjbSJv1vLr+5L3GdQZ
+      laIiEoNEE/YIExEcVrne4eKlgyAj2/JpLszThcRTzD+z5UibKQs6LzJBDQKBgDVa
+      dAGzCUt57w48nwvyQdWFgydaWef+bB9Zg8c+MCtUxuxfm4/Kqwetcff1hNtYPv60
+      N68weKj1Pi1vhcAi3+YJA/mMrJbAL5dK1uhMVreUiEjuQpfpLAzQIv1Y9sJUFwhY
+      BUbIZhgqVyQguZptDmCeUj6aoL9/sOxESTEXSTG1AoGBAMQ5iJZMsdLCERv0+6Y1
+      F/t/YSW8cugB3vdV9jHZuosoprz48p92pYP8OdQc70H5hZt53hoYNgYFSd+MU6H1
+      hJCaXTsiP4IUmBjiwzSp3o1ctP8lWvnyJpAadYdDhaDaAAoaMjCo9cm5OMwc8t8x
+      hwAPXV2cgWH8fPcT9NLAcwWk
+      -----END PRIVATE KEY-----
+    snis:
+      - id: 2846ce56-dbca-4437-8bc7-4c40e428f455
+        name: demo1.example.com
+        tags:
+          - internal-user
+    tags:
+      - internal-user
+consumer_groups:
+  - id: d96ddfb7-42de-4372-b9d3-d8ee854cfdd9
+    name: cg1
+    plugins:
+      - config:
+          allow:
+            - 1.2.3.4
+          deny: null
+          message: null
+          status: null
+        id: f3ad8889-57a5-4af9-9fed-bdca205e8ef6
+        name: ip-restriction
+    tags:
+      - internal-user
+  - id: accb1ac9-17ca-4213-be59-d1853e026404
+    name: cg2
+    plugins:
+      - config:
+          allow:
+            - 4.3.2.1
+          deny: null
+          message: null
+          status: null
+        id: 08e79a53-4cd1-47bb-997f-90a9ee4fa3e6
+        name: ip-restriction
+    tags:
+      - internal-user
+
+consumers:
+  - acls:
+      - group: foo-group
+        id: 5994fe37-b1d6-4334-b2a8-58893752f944
+        tags:
+          - internal-user
+    basicauth_credentials:
+      - id: 8b2d1c49-d2c7-4bbc-ac2d-301e0ff8db75
+        password: dd0982a1224ea0b565444a5cb24b04f0e5b999e2
+        tags:
+          - internal-user
+        username: user1
+    custom_id: bar
+    hmacauth_credentials:
+      - id: a5dad8cd-5c71-4e83-8b1e-25e145d8c2a3
+        secret: yeNZBeqCuk0D3H85VX77Umacf91MwqRo
+        tags:
+          - internal-user
+        username: hmac-user
+    id: ef0ce57f-00c2-446d-b5c1-fcfa1435cf91
+    jwt_secrets:
+      - algorithm: RS256
+        id: 86f9aede-c075-4a7d-9085-0750fc7dc5ea
+        key: MKWeR0nu9OAUR9HrjpUG82Hbfz7ZXsIw
+        rsa_public_key: |
+          -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAruemrMy2Q0wZMuaREt7v
+          /cs5UY1JCYo+3S/F3JZhsZB2urQ8yDh9f8s2CM1N+88b05k3CTcwRagQXDxWvw+J
+          WUIcD6sERmh61SCUNuJ8A2YT4z4Uii3spVB/osJVkvVxR6fJtJHovNVGjtlKIioD
+          x/KM0tpeF4D+6G5vAFlmBUgyDecv3ijXtlP/hrwRcj3gzQUIfLhzYlUaibGG86B9
+          BLC3Yquw9Xg+MyTeTYCH7OuDZSGvTe7iqVBT1TsrrEjc3zNWyIJRHaHcb/BJs5eL
+          2ToXo1HGySDKA3gxuMweq22n8s++1tyQpMzvjhCFjPTYKviREg9CpB3d+p2E+8Iw
+          rwIDAQAB
+          -----END PUBLIC KEY-----
+        secret: 6gkrxTKAraykMSpmnLNEGiEE3Yz8XL6U
+        tags:
+          - internal-user
+    keyauth_credentials:
+      - id: 062c89b3-c6a4-4629-a153-5df87972d950
+        key: iwb6Djkk4HhUlOCmLilDIKh6nZrn90ts
+        tags:
+          - internal-user
+    mtls_auth_credentials:
+      - ca_certificate:
+          id: 33cf661f-4af5-4087-8933-6a40638e9447
+        id: d82a0742-97a3-4dda-bf1a-0608a322e78a
+        subject_name: CN=foo,OU=bar,O=baz,L=qux,ST=quux,C=quuz
+        tags:
+          - internal-user
+    tags:
+      - internal-user
+    username: foo
+  - id: 1e344630-7d4a-4b48-816a-ec2cb9095c29
+    tags:
+      - internal-user
+    username: yolo
+custom_entities:
+  - fields:
+      methods:
+        - GET
+      query: query{ foo { bar } }
+      service:
+        name: svc1
+      uri: /foo
+    id: 43b4ab42-7390-4525-be9f-c5fe4e73ee13
+    type: degraphql_routes
+plugins:
+  - config:
+      ai_metrics: false
+      bandwidth_metrics: false
+      latency_metrics: false
+      per_consumer: false
+      status_code_metrics: false
+      upstream_health_metrics: false
+      wasm_metrics: false
+    enabled: true
+    id: 91ac6f2b-011f-4e77-8212-c623c622581f
+    name: prometheus
+    ordering:
+      after:
+        access:
+          - aws-lambda
+      before:
+        access:
+          - acl
+    protocols:
+      - http
+      - https
+    tags:
+      - internal-user
+  - config:
+      day: null
+      error_code: 429
+      error_message: API rate limit exceeded
+      fault_tolerant: true
+      header_name: null
+      hide_client_headers: false
+      hour: null
+      limit_by: consumer
+      minute: 10
+      month: null
+      path: null
+      policy: redis
+      redis:
+        database: 0
+        host: redis.common.svc
+        password: null
+        port: 6379
+        server_name: null
+        ssl: false
+        ssl_verify: false
+        timeout: 2000
+        username: null
+      redis_database: 0
+      redis_host: redis.common.svc
+      redis_password: null
+      redis_port: 6379
+      redis_server_name: null
+      redis_ssl: false
+      redis_ssl_verify: false
+      redis_timeout: 2000
+      redis_username: null
+      second: null
+      sync_rate: -1
+      year: null
+    consumer: yolo
+    enabled: true
+    id: f4550737-bc9a-43c1-90b5-bdabd28d70b5
+    instance_name: foo
+    name: rate-limiting
+    protocols:
+      - http
+      - https
+    route: r1
+    service: svc1
+    tags:
+      - internal-user
+services:
+  - ca_certificates:
+      - 33cf661f-4af5-4087-8933-6a40638e9447
+    client_certificate: 13c562a1-191c-4464-9b18-e5222b46035b
+    connect_timeout: 60000
+    enabled: true
+    host: mockbin.org
+    id: d5b084da-dd01-4e61-a46b-afe265eafbd4
+    name: svc1
+    path: /
+    port: 80
+    protocol: https
+    read_timeout: 60000
+    retries: 5
+    tls_verify_depth: 0
+    routes:
+      - headers:
+          x-foo:
+            - bar
+        hosts:
+          - demo1.example.com
+        https_redirect_status_code: 301
+        id: d5cd9472-f3e9-4639-bc7b-8b5f5963c931
+        methods:
+          - GET
+        name: r1
+        path_handling: v0
+        paths:
+          - /r1
+        preserve_host: false
+        protocols:
+          - http
+          - https
+        regex_priority: 0
+        request_buffering: true
+        response_buffering: true
+        snis:
+          - demo1.example.com
+        strip_path: true
+      - destinations:
+          - ip: 2.3.4.5
+            port: 80
+        https_redirect_status_code: 301
+        id: 884973ab-0a27-4ff9-ae5e-19caa9440775
+        name: r2
+        path_handling: v0
+        preserve_host: false
+        protocols:
+          - tcp
+        regex_priority: 0
+        request_buffering: true
+        response_buffering: true
+        sources:
+          - ip: 1.2.3.4
+            port: 80
+        strip_path: true
+        tags:
+          - internal-user
+    tags:
+      - team-svc1
+    tls_verify: false
+    tls_verify_depth: 0
+    write_timeout: 60000
+upstreams:
+  - algorithm: round-robin
+    hash_fallback: none
+    hash_on: none
+    hash_on_cookie_path: /
+    healthchecks:
+      active:
+        concurrency: 10
+        healthy:
+          http_statuses:
+            - 200
+            - 302
+          interval: 0
+          successes: 0
+        http_path: /
+        https_verify_certificate: true
+        timeout: 1
+        type: http
+        unhealthy:
+          http_failures: 0
+          http_statuses:
+            - 429
+            - 404
+            - 500
+            - 501
+            - 502
+            - 503
+            - 504
+            - 505
+          interval: 0
+          tcp_failures: 0
+          timeouts: 0
+      passive:
+        healthy:
+          http_statuses:
+            - 200
+            - 201
+            - 202
+            - 203
+            - 204
+            - 205
+            - 206
+            - 207
+            - 208
+            - 226
+            - 300
+            - 301
+            - 302
+            - 303
+            - 304
+            - 305
+            - 306
+            - 307
+            - 308
+          successes: 0
+        type: http
+        unhealthy:
+          http_failures: 0
+          http_statuses:
+            - 429
+            - 500
+            - 503
+          tcp_failures: 0
+          timeouts: 0
+      threshold: 0
+    id: 30f794f0-369f-43a0-9233-ce90e510dfc1
+    name: upstream1
+    slots: 10000
+    tags:
+      - internal-user
+    targets:
+      - id: 52424299-3381-455d-b6e4-96263beeb865
+        target: 198.51.100.11:80
+        weight: 100
+    use_srv_name: false
+vaults:
+  - config:
+      prefix: FOO
+    description: foooooo
+    id: 40403024-740a-43d4-a39f-11d219b5c102
+    name: env
+    prefix: foo
+    tags:
+      - internal-user
+

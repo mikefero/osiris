@@ -4,3 +4,5 @@ bin
 .env
 coverage.html
 coverage.out
+osiris.log
+osiris.json

@@ -13,19 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package main
+package resource
 
-import (
-	_ "embed"
+// MTLSAuthResource represents MTLS authentication credentials in Kong Gateway.
+type MTLSAuthResource struct {
+	BaseResource
+}
 
-	"github.com/mikefero/osiris/cmd"
-)
-
-//go:embed LICENSE
-var license string
-
-func main() {
-	cmd.Execute(cmd.Options{
-		License: license,
-	})
+// NewMTLSAuth creates a new mtls-auth resource.
+func NewMTLSAuth() Resource {
+	return &MTLSAuthResource{
+		BaseResource: BaseResource{
+			name: "mtls-auth",
+			path: "mtls-auths",
+		},
+	}
 }

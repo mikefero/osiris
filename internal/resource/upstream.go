@@ -13,19 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package main
+package resource
 
-import (
-	_ "embed"
+// UpstreamResource represents upstreams and targets in Kong Gateway.
+type UpstreamResource struct {
+	BaseResource
+}
 
-	"github.com/mikefero/osiris/cmd"
-)
-
-//go:embed LICENSE
-var license string
-
-func main() {
-	cmd.Execute(cmd.Options{
-		License: license,
-	})
+// NewUpstream creates a new upstream resource.
+func NewUpstream() Resource {
+	return &UpstreamResource{
+		BaseResource: BaseResource{
+			name: "upstream",
+			path: "upstreams",
+		},
+	}
 }

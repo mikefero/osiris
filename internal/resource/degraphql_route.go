@@ -13,19 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package main
+package resource
 
-import (
-	_ "embed"
+// DeGraphQLRouteResource represents degraphql routes in Kong Gateway.
+type DeGraphQLRouteResource struct {
+	BaseResource
+}
 
-	"github.com/mikefero/osiris/cmd"
-)
-
-//go:embed LICENSE
-var license string
-
-func main() {
-	cmd.Execute(cmd.Options{
-		License: license,
-	})
+// NewDegraphQLRoute creates a new degraphql-route resource.
+func NewDegraphQLRoute() Resource {
+	return &DeGraphQLRouteResource{
+		BaseResource: BaseResource{
+			name: "degraphql-route",
+			path: "degraphql_routes",
+		},
+	}
 }

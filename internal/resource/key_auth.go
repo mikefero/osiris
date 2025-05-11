@@ -13,19 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package main
+package resource
 
-import (
-	_ "embed"
+// KeyAuthResource represents key authentication credentials in Kong Gateway.
+type KeyAuthResource struct {
+	BaseResource
+}
 
-	"github.com/mikefero/osiris/cmd"
-)
-
-//go:embed LICENSE
-var license string
-
-func main() {
-	cmd.Execute(cmd.Options{
-		License: license,
-	})
+// NewKeyAuth creates a new key-auth resource.
+func NewKeyAuth() Resource {
+	return &KeyAuthResource{
+		BaseResource: BaseResource{
+			name: "key-auth",
+			path: "key-auths",
+		},
+	}
 }
