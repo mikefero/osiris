@@ -18,6 +18,9 @@ package resource
 import (
 	"context"
 	"fmt"
+
+	"github.com/mikefero/osiris/internal/client"
+	"go.uber.org/zap"
 )
 
 // ConsumerResource represents consumers in Kong Gateway.
@@ -37,28 +40,28 @@ func NewConsumer() Resource {
 
 // List retrieves a list of consumers from the Kong Gateway and includes their
 // associated consumer groups.
-func (r *ConsumerResource) List(ctx context.Context, client APIClient) ([]map[string]interface{}, error) {
-	consumerData, err := client.FetchData(ctx, r.path)
+func (r *ConsumerResource) List(ctx context.Context, client *client.Client, logger *zap.Logger) (ResourceData, error) {
+	consumerData, err := client.GetEndpoint(ctx, r.path)
 	if err != nil {
-		return nil, fmt.Errorf("failed to fetch consumer resource: %w", err)
+		return ResourceData{}, fmt.Errorf("failed to list consumer resource: %w", err)
 	}
 
 	// Gather consumer IDs to determine if they are part of a consumer group
 	for i, consumer := range consumerData {
 		id, ok := consumer["id"].(string)
 		if !ok {
-			return nil, fmt.Errorf("invalid consumer ID for item %d", i)
+			return ResourceData{}, fmt.Errorf("invalid consumer ID for item %d", i)
 		}
 
-		// Fetch consumer group IDs for this consumer
+		// List consumer group IDs for this consumer
 		consumerGroupsPath := fmt.Sprintf("%s/%s/consumer_groups", r.path, id)
-		consumerGroups, _ := client.FetchData(ctx, consumerGroupsPath)
+		consumerGroups, _ := client.GetEndpoint(ctx, consumerGroupsPath)
 		if len(consumerGroups) > 0 {
 			consumerGroupIDs := make([]string, len(consumerGroups))
 			for j, group := range consumerGroups {
 				groupID, ok := group["id"].(string)
 				if !ok {
-					return nil, fmt.Errorf("invalid consumer group ID for item %d in consumer group %d", i, j)
+					return ResourceData{}, fmt.Errorf("invalid consumer group ID for item %d in consumer group %d", i, j)
 				}
 				consumerGroupIDs[j] = groupID
 			}
@@ -69,5 +72,8 @@ func (r *ConsumerResource) List(ctx context.Context, client APIClient) ([]map[st
 		consumerData[i] = consumer
 	}
 
-	return consumerData, nil
+	return ResourceData{
+		Data: consumerData,
+		Name: r.Name(),
+	}, nil
 }

@@ -15,7 +15,14 @@ limitations under the License.
 */
 package resource
 
-import "context"
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/mikefero/osiris/internal/client"
+	"go.uber.org/zap"
+)
 
 // ResourceData represents the structure of the data returned from the API
 // endpoints. It contains a slice of maps, where each map represents a
@@ -24,18 +31,9 @@ type ResourceData struct {
 	// Data is a slice of maps, where each map represents a single item of data
 	// returned from the API endpoint.
 	Data []map[string]interface{} `json:"data"`
-	// Name is the name of the endpoint from which the data was fetched.
+	// Name is the name of the endpoint from which the data was retrieved.
 	// It is used to identify the source of the data in the output.
 	Name string `json:"name"`
-}
-
-// APIClient defines the methods a resource needs from the API client
-// to perform its operations. This interface allows resources to operate
-// without depending on the full client implementation.
-type APIClient interface {
-	// FetchData fetches data from the specified endpoint and returns
-	// it as a slice of maps.
-	FetchData(ctx context.Context, endpoint string) ([]map[string]interface{}, error)
 }
 
 // Resource represents a Kong API resource with standard operations.
@@ -44,8 +42,8 @@ type Resource interface {
 	Name() string
 	// Path returns the API endpoint path for the resource
 	Path() string
-	// List fetches all items of the resource type
-	List(ctx context.Context, client APIClient) ([]map[string]interface{}, error)
+	// List retrieves all items of the resource type
+	List(ctx context.Context, client *client.Client, logger *zap.Logger) (ResourceData, error)
 }
 
 // BaseResource provides a basic implementation of the Resource interface
@@ -65,15 +63,30 @@ func (r *BaseResource) Path() string {
 	return r.path
 }
 
-// List fetches all items of the resource type.
-func (r *BaseResource) List(ctx context.Context, client APIClient) ([]map[string]interface{}, error) {
-	return client.FetchData(ctx, r.path)
-}
-
-// New creates a new BaseResource with the given name and path.
-func New(name, path string) Resource {
-	return &BaseResource{
-		name: name,
-		path: path,
+// List retrieves all items of the resource type.
+func (r *BaseResource) List(ctx context.Context, client *client.Client, logger *zap.Logger) (ResourceData, error) {
+	startTime := time.Now()
+	data, err := client.GetEndpoint(ctx, r.path)
+	if err != nil {
+		logger.Error("error listing resource",
+			zap.String("resource", r.name),
+			zap.Error(err))
+		return ResourceData{}, fmt.Errorf("error listing resource %s: %w", r.name, err)
 	}
+
+	if len(data) == 0 {
+		logger.Debug("No data found for resource",
+			zap.String("resource", r.name))
+		return ResourceData{}, nil
+	}
+
+	logger.Info("Listed data for resource",
+		zap.String("resource", r.name),
+		zap.Int("items", len(data)),
+		zap.Duration("list-duration", time.Since(startTime)))
+
+	return ResourceData{
+		Data: data,
+		Name: r.name,
+	}, nil
 }

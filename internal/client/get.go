@@ -20,103 +20,20 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os"
 	"strings"
-	"sync"
 	"time"
 
-	"github.com/mikefero/osiris/internal/resource"
 	"go.uber.org/zap"
 )
 
-// GatherData fetches data from all resources in the resource registry.
-// It uses goroutines to fetch data concurrently and collects the results.
-func (c *Client) GatherData(ctx context.Context) error {
-	resources := resource.ResourceRegistry
-	errChan := make(chan error, len(resources))
-	var mutex sync.Mutex
-	var results []resource.ResourceData
-	var wg sync.WaitGroup
-
-	c.logger.Info("Gathering data from resources",
-		zap.Int("resource_count", len(resources)))
-
-	// Iterate over the resources and start a goroutine for each one
-	startTime := time.Now()
-	for _, res := range resources {
-		wg.Add(1)
-		go func(res resource.Resource) {
-			defer wg.Done()
-
-			// List the resource items
-			data, err := res.List(ctx, c)
-			if err != nil {
-				c.logger.Error("error listing resource",
-					zap.String("resource", res.Name()),
-					zap.Error(err))
-				errChan <- fmt.Errorf("error listing resource %s: %w", res.Name(), err)
-				return
-			}
-
-			if len(data) > 0 {
-				c.logger.Info("Fetched data for resource",
-					zap.String("resource", res.Name()),
-					zap.Int("items", len(data)),
-					zap.Duration("fetch-duration", time.Since(startTime)))
-
-				mutex.Lock()
-				results = append(results, resource.ResourceData{
-					Data: data,
-					Name: res.Name(),
-				})
-				mutex.Unlock()
-			} else {
-				c.logger.Debug("No data found for resource",
-					zap.String("resource", res.Name()))
-			}
-		}(res)
-	}
-
-	// Rest of the function remains the same...
-	done := make(chan struct{})
-	go func() {
-		wg.Wait()
-		close(done)
-	}()
-
-	select {
-	case <-ctx.Done():
-		c.logger.Warn("Context was canceled while fetching data from resources",
-			zap.Error(ctx.Err()))
-		return ctx.Err()
-	case <-done:
-		close(errChan)
-		if len(errChan) > 0 {
-			err := <-errChan
-			c.logger.Error("Error occurred while fetching data from resources",
-				zap.Error(err))
-			return err
-		}
-	}
-
-	c.logger.Info("Successfully gathered data from resources",
-		zap.Int("resource-count", len(resources)),
-		zap.Duration("duration", time.Since(startTime)))
-
-	if err := c.writeResults(results); err != nil {
-		c.logger.Error("error writing results",
-			zap.String("output-filename", c.outputFilename),
-			zap.Error(err))
-		return fmt.Errorf("error writing results: %w", err)
-	}
-	return nil
-}
-
-func (c *Client) fetchEndpoint(ctx context.Context, endpoint string) ([]map[string]interface{}, error) {
+// GetEndpoint retrieves all data from a specified endpoint, handling
+// pagination and rate limiting. It returns a slice of maps containing the
+// data from the endpoint, or an error if the request fails.
+func (c *Client) GetEndpoint(ctx context.Context, endpoint string) ([]map[string]interface{}, error) {
 	endpointURL := fmt.Sprintf("%s/%s", c.baseURL, endpoint)
 	var result []map[string]interface{}
 
-	c.logger.Debug("Fetching endpoint",
+	c.logger.Debug("Getting endpoint",
 		zap.String("endpoint", endpoint),
 		zap.String("endpoint-url", endpointURL))
 
@@ -134,17 +51,17 @@ func (c *Client) fetchEndpoint(ctx context.Context, endpoint string) ([]map[stri
 		}
 
 		pageCount++
-		c.logger.Debug("Fetching page",
+		c.logger.Debug("Getting page",
 			zap.String("endpoint", endpoint),
 			zap.String("page-url", pageURL),
 			zap.Int("page-number", pageCount))
 
-		data, nextPageURL, err := c.fetchEndpointPage(ctx, pageURL)
+		data, nextPageURL, err := c.getEndpointPage(ctx, pageURL)
 		if err != nil {
 			// Check if the error is a RateLimitError
 			errRateLimit, ok := err.(*RateLimitError)
 			if !ok {
-				return nil, fmt.Errorf("error fetching endpoint %s: %w", endpoint, err)
+				return nil, fmt.Errorf("error getting endpoint %s: %w", endpoint, err)
 			}
 
 			// Handle rate limit Retry-After duration
@@ -166,7 +83,7 @@ func (c *Client) fetchEndpoint(ctx context.Context, endpoint string) ([]map[stri
 			return nil, nil
 		}
 
-		c.logger.Debug("Fetched data from page",
+		c.logger.Debug("Retrieved data from page",
 			zap.String("endpoint", endpoint),
 			zap.String("page-url", pageURL),
 			zap.Int("page-number", pageCount),
@@ -176,7 +93,7 @@ func (c *Client) fetchEndpoint(ctx context.Context, endpoint string) ([]map[stri
 		result = append(result, data...)
 
 		if len(nextPageURL) == 0 {
-			c.logger.Debug("No more pages to fetch",
+			c.logger.Debug("No more pages to get",
 				zap.String("endpoint", endpoint),
 				zap.String("page-url", pageURL))
 			break
@@ -184,16 +101,16 @@ func (c *Client) fetchEndpoint(ctx context.Context, endpoint string) ([]map[stri
 		pageURL = nextPageURL
 	}
 
-	c.logger.Debug("Fetched all pages",
+	c.logger.Debug("Retrieved all pages",
 		zap.String("endpoint", endpoint),
 		zap.Int("total-pages", pageCount),
 		zap.Int("total-items", len(result)),
-		zap.Duration("fetch-duration", time.Since(startTime)))
+		zap.Duration("get-duration", time.Since(startTime)))
 
 	return result, nil
 }
 
-func (c *Client) fetchEndpointPage(ctx context.Context, url string) ([]map[string]interface{}, string, error) {
+func (c *Client) getEndpointPage(ctx context.Context, url string) ([]map[string]interface{}, string, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		return nil, "", fmt.Errorf("error creating request: %w", err)
@@ -222,7 +139,7 @@ func (c *Client) fetchEndpointPage(ctx context.Context, url string) ([]map[strin
 	startTime = time.Now()
 	switch resp.StatusCode {
 	case http.StatusOK:
-		var pageResp = struct {
+		pageResp := struct {
 			Data []map[string]interface{} `json:"data"`
 			Next string                   `json:"next"`
 
@@ -261,7 +178,7 @@ func (c *Client) fetchEndpointPage(ctx context.Context, url string) ([]map[strin
 			zap.Int("item-count", len(pageResp.Data)),
 			zap.Duration("parse-duration", time.Since(startTime)))
 
-		// Determine the next URL to fetch
+		// Determine the next URL to request
 		var nextURL string
 		if len(pageResp.Next) > 0 {
 			nextURL = fmt.Sprintf("%s/%s", c.baseURL, strings.TrimPrefix(pageResp.Next, "/"))
@@ -278,7 +195,7 @@ func (c *Client) fetchEndpointPage(ctx context.Context, url string) ([]map[strin
 
 		return pageResp.Data, nextURL, nil
 	case http.StatusTooManyRequests:
-		retryDuration := c.getRetryAfterDuration(resp)
+		retryDuration := c.retryAfterDuration(resp)
 		c.logger.Warn("Rate limit exceeded; retrying",
 			zap.String("url", url),
 			zap.Duration("retry-after", retryDuration))
@@ -294,63 +211,4 @@ func (c *Client) fetchEndpointPage(ctx context.Context, url string) ([]map[strin
 			zap.Int("status-code", resp.StatusCode))
 		return nil, "", fmt.Errorf("unhandled status code: %d", resp.StatusCode)
 	}
-}
-
-func (c *Client) getRetryAfterDuration(resp *http.Response) time.Duration {
-	retryAfter := resp.Header.Get("Retry-After")
-	if len(retryAfter) == 0 {
-		c.logger.Debug("Retry-After header not found; using default duration",
-			zap.Duration("duration", defaultRateLimitWaitDuration))
-		return defaultRateLimitWaitDuration
-	}
-
-	duration, err := time.ParseDuration(retryAfter)
-	if err != nil {
-		c.logger.Error("error parsing Retry-After header; using default duration",
-			zap.Duration("duration", defaultRateLimitWaitDuration),
-			zap.String("retry-after", retryAfter),
-			zap.Error(err))
-		return defaultRateLimitWaitDuration
-	}
-	return duration
-}
-
-func (c *Client) writeResults(results []resource.ResourceData) error {
-	// Create a map where the keys are the endpoint names
-	resultMap := make(map[string][]map[string]interface{})
-
-	// Convert the slice of Results to a map
-	for _, result := range results {
-		resultMap[result.Name] = result.Data
-	}
-
-	c.logger.Info("Marshaling results to JSON",
-		zap.Int("endpointCount", len(resultMap)))
-
-	// Marshal the map to JSON with pretty formatting
-	startTime := time.Now()
-	jsonData, err := json.MarshalIndent(resultMap, "", "  ")
-	if err != nil {
-		c.logger.Error("error marshaling results", zap.Error(err))
-		return fmt.Errorf("error marshaling results: %w", err)
-	}
-
-	c.logger.Debug("Writing results to file",
-		zap.String("output-filename", c.outputFilename),
-		zap.Int("bytes", len(jsonData)),
-		zap.Duration("duration", time.Since(startTime)))
-
-	if err := os.WriteFile(c.outputFilename, jsonData, 0600); err != nil {
-		c.logger.Error("error writing file",
-			zap.String("outout-filename", c.outputFilename),
-			zap.Error(err))
-		return fmt.Errorf("error writing file: %w", err)
-	}
-
-	c.logger.Info("Successfully wrote results to JSON file",
-		zap.String("output-filename", c.outputFilename),
-		zap.Int("bytes", len(jsonData)),
-		zap.Duration("duration", time.Since(startTime)))
-
-	return nil
 }

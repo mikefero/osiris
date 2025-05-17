@@ -16,7 +16,6 @@ limitations under the License.
 package client
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"strings"
@@ -67,8 +66,21 @@ func NewClient(config *config.Config, logger *zap.Logger) *Client {
 	}
 }
 
-// FetchData implements the resource.APIClient interface method to fetch data
-// from an endpoint.
-func (c *Client) FetchData(ctx context.Context, endpoint string) ([]map[string]interface{}, error) {
-	return c.fetchEndpoint(ctx, endpoint)
+func (c *Client) retryAfterDuration(resp *http.Response) time.Duration {
+	retryAfter := resp.Header.Get("Retry-After")
+	if len(retryAfter) == 0 {
+		c.logger.Debug("Retry-After header not found; using default duration",
+			zap.Duration("duration", defaultRateLimitWaitDuration))
+		return defaultRateLimitWaitDuration
+	}
+
+	duration, err := time.ParseDuration(retryAfter)
+	if err != nil {
+		c.logger.Error("error parsing Retry-After header; using default duration",
+			zap.Duration("duration", defaultRateLimitWaitDuration),
+			zap.String("retry-after", retryAfter),
+			zap.Error(err))
+		return defaultRateLimitWaitDuration
+	}
+	return duration
 }

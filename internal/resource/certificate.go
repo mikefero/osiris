@@ -18,6 +18,9 @@ package resource
 import (
 	"context"
 	"fmt"
+
+	"github.com/mikefero/osiris/internal/client"
+	"go.uber.org/zap"
 )
 
 // CertificateResource represents SSL Certificates in Kong Gateway.
@@ -37,12 +40,17 @@ func NewCertificate() Resource {
 
 // List retrieves a list of certificates from the Kong Gateway and removes
 // metadata from the response.
-func (r *CertificateResource) List(ctx context.Context, client APIClient) ([]map[string]interface{}, error) {
-	certificateData, err := client.FetchData(ctx, r.path)
+func (r *CertificateResource) List(ctx context.Context, client *client.Client, logger *zap.Logger) (
+	ResourceData, error,
+) {
+	certificateData, err := client.GetEndpoint(ctx, r.path)
 	if err != nil {
-		return nil, fmt.Errorf("failed to fetch certificates: %w", err)
+		return ResourceData{}, fmt.Errorf("failed to list certificates: %w", err)
 	}
 
 	// Remove metadata from certificates before returning
-	return cleanCertificateData(certificateData), nil
+	return ResourceData{
+		Data: cleanCertificateData(certificateData),
+		Name: r.Name(),
+	}, nil
 }

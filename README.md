@@ -1,7 +1,7 @@
 # Osiris
 
 Osiris is a tool for dumping and managing control plane configurations from Kong
-Gateway. It provides functionality to fetch, sanitize, and store configuration
+Gateway. It provides functionality to list, sanitize, and store configuration
 data from Kong control planes.
 
 ## Features

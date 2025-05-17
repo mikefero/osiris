@@ -18,6 +18,9 @@ package resource
 import (
 	"context"
 	"fmt"
+
+	"github.com/mikefero/osiris/internal/client"
+	"go.uber.org/zap"
 )
 
 // ConfigStoreResource represents config stores in Konnect Only.
@@ -36,29 +39,31 @@ func NewConfigStore() Resource {
 }
 
 // List retrieves a list of config stores and secrets from Konnect.
-func (r *ConfigStoreResource) List(ctx context.Context, client APIClient) ([]map[string]interface{}, error) {
-	configStoreData, err := client.FetchData(ctx, r.path)
+func (r *ConfigStoreResource) List(ctx context.Context, client *client.Client, logger *zap.Logger) (
+	ResourceData, error,
+) {
+	configStoreData, err := client.GetEndpoint(ctx, r.path)
 	if err != nil {
-		return nil, fmt.Errorf("failed to fetch config stores: %w", err)
+		return ResourceData{}, fmt.Errorf("failed to list config stores: %w", err)
 	}
 
 	// Gather consumer IDs to determine if they are part of a consumer group
 	for i, configStore := range configStoreData {
 		id, ok := configStore["id"].(string)
 		if !ok {
-			return nil, fmt.Errorf("invalid config store ID for item %d", i)
+			return ResourceData{}, fmt.Errorf("invalid config store ID for item %d", i)
 		}
 
-		// Fetch secrets keys for this config store since the values are not
+		// List secrets keys for this config store since the values are not
 		// returned in the list
 		secretsPath := fmt.Sprintf("%s/%s/secrets", r.path, id)
-		secrets, _ := client.FetchData(ctx, secretsPath)
+		secrets, _ := client.GetEndpoint(ctx, secretsPath)
 		if len(secrets) > 0 {
 			secretKeys := make([]string, len(secrets))
 			for j, secret := range secrets {
 				secretKey, ok := secret["key"].(string)
 				if !ok {
-					return nil, fmt.Errorf("invalid secret key for item %d in config store %d", i, j)
+					return ResourceData{}, fmt.Errorf("invalid secret key for item %d in config store %d", i, j)
 				}
 				secretKeys[j] = secretKey
 			}
@@ -69,5 +74,8 @@ func (r *ConfigStoreResource) List(ctx context.Context, client APIClient) ([]map
 		configStoreData[i] = configStore
 	}
 
-	return configStoreData, nil
+	return ResourceData{
+		Data: configStoreData,
+		Name: r.Name(),
+	}, nil
 }
