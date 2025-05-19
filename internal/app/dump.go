@@ -85,10 +85,8 @@ func registerDump(lc fx.Lifecycle, config *config.Config, logger *zap.Logger) {
 	})
 }
 
-// ListData lists data from all resources in the resource registry.
-// It uses goroutines to GET data concurrently and collects the results.
 func listData(ctx context.Context, client *client.Client, logger *zap.Logger) ([]resource.ResourceData, error) {
-	resources := resource.ResourceRegistry
+	resources := resource.NewRegistry().GetResources()
 	errChan := make(chan error, len(resources))
 	var mutex sync.Mutex
 	var results []resource.ResourceData
@@ -111,6 +109,11 @@ func listData(ctx context.Context, client *client.Client, logger *zap.Logger) ([
 					zap.String("resource", res.Name()),
 					zap.Error(err))
 				errChan <- fmt.Errorf("error listing resource %s: %w", res.Name(), err)
+				return
+			}
+			if len(data.Data) == 0 {
+				logger.Debug("No data found for resource",
+					zap.String("resource", res.Name()))
 				return
 			}
 

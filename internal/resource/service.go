@@ -26,6 +26,10 @@ func NewService() Resource {
 		BaseResource: BaseResource{
 			name: "service",
 			path: "services",
+			dependencies: []string{
+				"ca-certificate",
+				"certificate",
+			},
 		},
 	}
 }

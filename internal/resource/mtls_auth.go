@@ -24,8 +24,9 @@ type MTLSAuthResource struct {
 func NewMTLSAuth() Resource {
 	return &MTLSAuthResource{
 		BaseResource: BaseResource{
-			name: "mtls-auth",
-			path: "mtls-auths",
+			name:         "mtls-auth",
+			path:         "mtls-auths",
+			dependencies: []string{"consumer"},
 		},
 	}
 }

@@ -46,6 +46,11 @@ func (r *ConfigStoreResource) List(ctx context.Context, client *client.Client, l
 	if err != nil {
 		return ResourceData{}, fmt.Errorf("failed to list config stores: %w", err)
 	}
+	if len(configStoreData) == 0 {
+		logger.Debug("No data found for resource",
+			zap.String("resource", r.name))
+		return ResourceData{}, nil
+	}
 
 	// Gather consumer IDs to determine if they are part of a consumer group
 	for i, configStore := range configStoreData {
@@ -78,4 +83,33 @@ func (r *ConfigStoreResource) List(ctx context.Context, client *client.Client, l
 		Data: configStoreData,
 		Name: r.Name(),
 	}, nil
+}
+
+func (r *ConfigStoreResource) Delete(ctx context.Context, client *client.Client, item map[string]interface{},
+	logger *zap.Logger,
+) error {
+	id, ok := item["id"].(string)
+	if !ok {
+		return fmt.Errorf("invalid config store ID: %v", item)
+	}
+
+	// Delete secrets keys for this config store
+	secrets, ok := item["secret"].([]string)
+	if ok && len(secrets) > 0 {
+		for _, secretKey := range secrets {
+			// Construct the path to delete the secret
+			secretPath := fmt.Sprintf("%s/%s/secrets/%s", r.path, id, secretKey)
+			if err := client.DeleteEndpoint(ctx, secretPath); err != nil {
+				return fmt.Errorf("failed to delete secret %s for config store %s: %w", secretKey, id, err)
+			}
+		}
+	}
+
+	// Delete the config store by ID
+	path := fmt.Sprintf("%s/%s", r.path, id)
+	if err := client.DeleteEndpoint(ctx, path); err != nil {
+		return fmt.Errorf("failed to delete config store %s: %w", id, err)
+	}
+
+	return nil
 }

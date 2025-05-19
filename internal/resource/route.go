@@ -24,8 +24,9 @@ type RouteResource struct {
 func NewRoute() Resource {
 	return &RouteResource{
 		BaseResource: BaseResource{
-			name: "route",
-			path: "routes",
+			name:         "route",
+			path:         "routes",
+			dependencies: []string{"service"},
 		},
 	}
 }

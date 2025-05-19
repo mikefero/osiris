@@ -26,8 +26,9 @@ type GraphQLRateLimitingAdvancedCostResource struct {
 func NewGraphQLRateLimitingAdvancedCost() Resource {
 	return &GraphQLRateLimitingAdvancedCostResource{
 		BaseResource: BaseResource{
-			name: "graphql-rate-limiting-advanced-cost",
-			path: "graphql-rate-limiting-advanced/costs",
+			name:         "graphql-rate-limiting-advanced-cost",
+			path:         "graphql-rate-limiting-advanced/costs",
+			dependencies: []string{"route", "service"},
 		},
 	}
 }

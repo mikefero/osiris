@@ -24,8 +24,9 @@ type SNIResource struct {
 func NewSNI() Resource {
 	return &SNIResource{
 		BaseResource: BaseResource{
-			name: "sni",
-			path: "snis",
+			name:         "sni",
+			path:         "snis",
+			dependencies: []string{"certificate"},
 		},
 	}
 }

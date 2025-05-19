@@ -47,6 +47,11 @@ func (r *CACertificateResource) List(ctx context.Context, client *client.Client,
 	if err != nil {
 		return ResourceData{}, fmt.Errorf("failed to list CA certificates: %w", err)
 	}
+	if len(caCertificateData) == 0 {
+		logger.Debug("No data found for resource",
+			zap.String("resource", r.name))
+		return ResourceData{}, nil
+	}
 
 	// Remove metadata from CA certificates before returning
 	return ResourceData{

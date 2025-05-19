@@ -26,6 +26,15 @@ func NewPlugin() Resource {
 		BaseResource: BaseResource{
 			name: "plugin",
 			path: "plugins",
+			dependencies: []string{
+				"consumer",
+				"consumer-group",
+				"custom-plugin",
+				"partial",
+				"plugin-schema",
+				"route",
+				"service",
+			},
 		},
 	}
 }

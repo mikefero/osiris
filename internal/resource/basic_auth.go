@@ -25,8 +25,9 @@ type BasicAuthResource struct {
 func NewBasicAuth() Resource {
 	return &BasicAuthResource{
 		BaseResource: BaseResource{
-			name: "basic-auth",
-			path: "basic-auths",
+			name:         "basic-auth",
+			path:         "basic-auths",
+			dependencies: []string{"consumer"},
 		},
 	}
 }

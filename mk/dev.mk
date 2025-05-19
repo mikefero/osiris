@@ -19,6 +19,10 @@ dump: ## Run the dump command
 license: ## Run the license command
 	@CGO_ENABLED=0 go run -ldflags "$(APP_LDFLAGS_DEV)" "$(APP_DIR)" license
 
+.PHONY: reset
+reset: ## Run the reset command
+	@CGO_ENABLED=0 go run -ldflags "$(APP_LDFLAGS_DEV)" "$(APP_DIR)" reset
+
 .PHONY: version
 version: ## Run the version command
 	@CGO_ENABLED=0 go run -ldflags "$(APP_LDFLAGS_DEV)" "$(APP_DIR)" version

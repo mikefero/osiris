@@ -18,7 +18,6 @@ package resource
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"github.com/mikefero/osiris/internal/client"
 	"go.uber.org/zap"
@@ -42,15 +41,20 @@ type Resource interface {
 	Name() string
 	// Path returns the API endpoint path for the resource
 	Path() string
+	// Dependencies returns a list of dependencies for the resource
+	Dependencies() []string
 	// List retrieves all items of the resource type
 	List(ctx context.Context, client *client.Client, logger *zap.Logger) (ResourceData, error)
+	// Delete removes a specific item by ID from the resource.
+	Delete(ctx context.Context, client *client.Client, item map[string]interface{}, logger *zap.Logger) error
 }
 
 // BaseResource provides a basic implementation of the Resource interface
 // that can be embedded in specific resource types.
 type BaseResource struct {
-	name string
-	path string
+	name         string
+	path         string
+	dependencies []string
 }
 
 // Name returns the display name of the resource.
@@ -63,9 +67,15 @@ func (r *BaseResource) Path() string {
 	return r.path
 }
 
+func (r *BaseResource) Dependencies() []string {
+	// Return a copy of the dependencies slice to prevent external modification
+	deps := make([]string, len(r.dependencies))
+	copy(deps, r.dependencies)
+	return deps
+}
+
 // List retrieves all items of the resource type.
 func (r *BaseResource) List(ctx context.Context, client *client.Client, logger *zap.Logger) (ResourceData, error) {
-	startTime := time.Now()
 	data, err := client.GetEndpoint(ctx, r.path)
 	if err != nil {
 		logger.Error("error listing resource",
@@ -82,11 +92,39 @@ func (r *BaseResource) List(ctx context.Context, client *client.Client, logger *
 
 	logger.Info("Listed data for resource",
 		zap.String("resource", r.name),
-		zap.Int("items", len(data)),
-		zap.Duration("list-duration", time.Since(startTime)))
+		zap.Int("items", len(data)))
 
 	return ResourceData{
 		Data: data,
 		Name: r.name,
 	}, nil
+}
+
+func (r *BaseResource) Delete(ctx context.Context, client *client.Client, item map[string]interface{},
+	logger *zap.Logger,
+) error {
+	// Determine the ID of the item to delete
+	id, ok := item["id"].(string)
+	if !ok {
+		name, ok := item["name"].(string)
+		if !ok {
+			return fmt.Errorf("invalid item format: missing id or name field")
+		}
+		id = name
+	}
+
+	endpointWithID := fmt.Sprintf("%s/%s", r.path, id)
+	if err := client.DeleteEndpoint(ctx, endpointWithID); err != nil {
+		logger.Error("error deleting resource",
+			zap.String("resource", r.name),
+			zap.String("id", id),
+			zap.Error(err))
+		return fmt.Errorf("error deleting resource %s with ID %s: %w", r.name, id, err)
+	}
+
+	logger.Debug("Deleted resource",
+		zap.String("resource", r.name),
+		zap.String("id", id))
+
+	return nil
 }

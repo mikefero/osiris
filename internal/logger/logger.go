@@ -30,12 +30,15 @@ type LoggerCommandType int
 const (
 	// LoggerCommandTypeDump is the command type for dump.
 	LoggerCommandTypeDump LoggerCommandType = iota
+	// LoggerCommandTypeReset is the command type for reset.
+	LoggerCommandTypeReset
 )
 
 // LoggerCommandTypeString returns the string representation of the command type.
 func (l LoggerCommandType) String() string {
 	return [...]string{
 		"dump",
+		"reset",
 	}[l]
 }
 

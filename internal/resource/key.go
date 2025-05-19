@@ -24,8 +24,9 @@ type KeyResource struct {
 func NewKey() Resource {
 	return &KeyResource{
 		BaseResource: BaseResource{
-			name: "key",
-			path: "keys",
+			name:         "key",
+			path:         "keys",
+			dependencies: []string{"key-set"},
 		},
 	}
 }

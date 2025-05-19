@@ -24,8 +24,9 @@ type HMACAuthResource struct {
 func NewHMACAuth() Resource {
 	return &HMACAuthResource{
 		BaseResource: BaseResource{
-			name: "hmac-auth",
-			path: "hmac-auths",
+			name:         "hmac-auth",
+			path:         "hmac-auths",
+			dependencies: []string{"consumer"},
 		},
 	}
 }

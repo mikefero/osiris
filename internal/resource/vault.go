@@ -24,8 +24,9 @@ type VaultResource struct {
 func NewVault() Resource {
 	return &VaultResource{
 		BaseResource: BaseResource{
-			name: "vault",
-			path: "vaults",
+			name:         "vault",
+			path:         "vaults",
+			dependencies: []string{"config-store"},
 		},
 	}
 }

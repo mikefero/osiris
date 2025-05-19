@@ -24,8 +24,9 @@ type JWTResource struct {
 func NewJWT() Resource {
 	return &JWTResource{
 		BaseResource: BaseResource{
-			name: "jwt",
-			path: "jwts",
+			name:         "jwt",
+			path:         "jwts",
+			dependencies: []string{"consumer"},
 		},
 	}
 }

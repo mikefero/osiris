@@ -32,8 +32,9 @@ type ConsumerResource struct {
 func NewConsumer() Resource {
 	return &ConsumerResource{
 		BaseResource: BaseResource{
-			name: "consumer",
-			path: "consumers",
+			name:         "consumer",
+			path:         "consumers",
+			dependencies: []string{"consumer-group"},
 		},
 	}
 }
@@ -44,6 +45,11 @@ func (r *ConsumerResource) List(ctx context.Context, client *client.Client, logg
 	consumerData, err := client.GetEndpoint(ctx, r.path)
 	if err != nil {
 		return ResourceData{}, fmt.Errorf("failed to list consumer resource: %w", err)
+	}
+	if len(consumerData) == 0 {
+		logger.Debug("No data found for resource",
+			zap.String("resource", r.name))
+		return ResourceData{}, nil
 	}
 
 	// Gather consumer IDs to determine if they are part of a consumer group

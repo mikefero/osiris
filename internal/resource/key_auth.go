@@ -24,8 +24,9 @@ type KeyAuthResource struct {
 func NewKeyAuth() Resource {
 	return &KeyAuthResource{
 		BaseResource: BaseResource{
-			name: "key-auth",
-			path: "key-auths",
+			name:         "key-auth",
+			path:         "key-auths",
+			dependencies: []string{"consumer"},
 		},
 	}
 }

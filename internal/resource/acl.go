@@ -24,8 +24,9 @@ type ACLResource struct {
 func NewACL() Resource {
 	return &ACLResource{
 		BaseResource: BaseResource{
-			name: "acl",
-			path: "acls",
+			name:         "acl",
+			path:         "acls",
+			dependencies: []string{"consumer"},
 		},
 	}
 }

@@ -24,8 +24,9 @@ type DeGraphQLRouteResource struct {
 func NewDegraphQLRoute() Resource {
 	return &DeGraphQLRouteResource{
 		BaseResource: BaseResource{
-			name: "degraphql-route",
-			path: "degraphql_routes",
+			name:         "degraphql-route",
+			path:         "degraphql_routes",
+			dependencies: []string{"route", "service"},
 		},
 	}
 }

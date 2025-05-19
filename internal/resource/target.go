@@ -26,7 +26,8 @@ func NewTarget() Resource {
 		BaseResource: BaseResource{
 			name: "target",
 			// TODO(fero): We should add /targets endpoint to Konnect translator
-			path: "v1/targets",
+			path:         "v1/targets",
+			dependencies: []string{"upstream"},
 		},
 	}
 }
